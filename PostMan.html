@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Manager</title>
+    <link rel="stylesheet" href="./Prism/prism.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <style>
+        *{
+            display: inline-block;
+        }
+    </style> -->
+</head>
+
+<body>
+
+    <div class="container mt-5 mb-5">
+        <h1 class="text-center">API Manager</h1>
+    </div>
+    <!-- form -->
+    <div class="container-fluid row ">
+        <div class="container col-md-6">
+            <div class="mx-5">
+                <form class="row">
+
+                    <!-- method -->
+                    <div class="col-md-2">
+                        <select name="method" id="methods" class="form-select" aria-label="Default select example">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                        </select>
+                    </div>
+
+                    <!-- url -->
+                    <div class="col-md-8">
+                        <input type="url" class="form-control" id="url" placeholder="Enter URL">
+                    </div>
+
+                    <!-- button -->
+                    <div class="col-md-2 mb-3">
+                        <button id="send" type="submit" class="btn btn-dark">Send</button>
+                    </div>
+
+                    <!-- format -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="json-tab" data-bs-toggle="tab" data-bs-target="#json"
+                                type="button" role="tab" aria-controls="json" aria-selected="true">JSON</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="params-tab" data-bs-toggle="tab" data-bs-target="#params"
+                                type="button" role="tab" aria-controls="params" aria-selected="false">Custom Parameters</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="json" role="tabpanel" aria-labelledby="json-tab">
+                            <div>
+                                <!-- JSON request box -->
+                                <div id="jsonrequest">
+                                    <div id="requestBox" class="form-group d-flex mt-3 align-items-center">
+                                        <label for="jsonrequest" class="col-md-3 form-lable ">JSON Request :</label>
+                                        <div class="col-md-5">
+                                            <textarea class="form-control mx-2" id="requestjsontext"
+                                                rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="params" role="tabpanel" aria-labelledby="params-tab">
+                            <div>
+                                <!-- Parameters -->
+                                <div id="parameterBox" class="my-3">
+                                    <div class="form-row d-flex align-items-center">
+                                        <label for="parameters" class="col-md-2 form-lable">Parameters :</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control mx-1" id="parameterkey1"
+                                                placeholder="Enter Parameter Key">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control mx-2" id="parametervalue1"
+                                                placeholder="Enter Parameter Value">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button id="add-btn" class="btn btn-dark mx-3">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="paramtags"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="container col-md-6">
+            <div class="container mx-5" id="responsetab">
+                <div class="row d-flex col-md-12 align-items-center">
+                    <label for="responsejsontext" class="col-md-2 col-form-lable">Response : </label>
+                    <div id="status" class="input-group col-md-8" style="width: 400px;">
+                        <span id="status-i" class="input-group-text"></span>
+                        <div id="status-code" class="form-control col-md-6"></div>
+                        <!-- <input type="text" class="form-control" placeholder="Username"> -->
+                    </div>
+                </div>
+                <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text"
+                            type="button" role="tab" aria-controls="text" aria-selected="true">Text</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="jtext-tab" data-bs-toggle="tab" data-bs-target="#jtext"
+                            type="button" role="tab" aria-controls="jtext" aria-selected="false">Json Text</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="text" role="tabpanel" aria-labelledby="text-tab">
+                        <div class="col-md-11 mt-4">
+                            <pre class="d-flex language-javascript">
+                                <code id="prism_response" class="language-javascript">Send a Request for Response...</code>
+                            </pre>
+                                <!-- <textarea class="form-control mt-3" id="responsejsontext"
+                                rows="10">Response is Being Loaded...</textarea> -->
+                            </div>
+                    </div>
+                    <div class="tab-pane fade" id="jtext" role="tabpanel" aria-labelledby="jtext-tab">
+                        <div class="col-md-11 mt-4">
+                            <pre class="d-flex language-javascript">
+                                <code id="prism_response_jtext" class="language-javascript">Send a Request for Response...</code>
+                            </pre>
+                                <!-- <textarea class="form-control mt-3" id="responsejsontext"
+                                rows="10">Response is Being Loaded...</textarea> -->
+                            </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="./Prism/prism.js"></script>
+    <script>
+
+        var param_count = 0;
+
+        document.getElementById('status').style.display = 'none';
+
+        function addparam(string) {
+            let div = document.createElement('div');
+            div.innerHTML = string;
+            return div.firstElementChild;
+        }
+
+        var addBtn = document.getElementById('add-btn');
+        addBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            var paramtag = document.getElementById('parameterBox');
+            var string = `  <div class="form-row d-flex align-items-center my-2">
+                                    <label for="parameters" class="col-md-2 form-lable">Parameters :</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control mx-1" id="parameterkey${param_count + 2}"
+                                            placeholder="Enter Parameter Key">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control mx-2" id="parametervalue${param_count + 2}"
+                                            placeholder="Enter Parameter Value">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-dark deleteParam mx-3"> - </button>
+                                    </div>
+                                </div>`;
+
+            let paramElemennt = addparam(string);
+            // console.log(paramElemennt);
+            paramtag.appendChild(paramElemennt);
+
+            let deleteParam = document.getElementsByClassName('deleteParam');
+            for (item of deleteParam) {
+                item.addEventListener('click', (e) => {
+                    // e.preventDefault();
+                    e.target.parentElement.parentElement.remove();
+                })
+            }
+            param_count++;
+        })
+
+        var currentTab = 'JSON'; // Default active tab
+
+        // Listen for tab change events
+        var tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabButtons.forEach(button => {
+            button.addEventListener('shown.bs.tab', (event) => {
+                let selectedTab = event.target.textContent;
+                // Exclude "Text" and "Json Text" tabs
+                if (selectedTab !== 'Text' && selectedTab !== 'Json Text') {
+                    currentTab = selectedTab; // Update currentTab with the selected tab's text
+                    console.log(`Current Tab: ${currentTab}`);
+                }
+            });
+        });
+
+        // Function to get the selected tab
+        function getSelectedTab() {
+            return currentTab;
+        }
+
+        // Example usage
+        console.log(`Initially selected tab: ${getSelectedTab()}`);
+
+
+        let Submit = document.getElementById('send');
+        Submit.addEventListener('click', (event) => {
+            event.preventDefault();
+            // document.getElementById('responsejsontext').value = "Please Wait, While Felching Response..";
+            document.getElementById('prism_response').innerHTML = "Please Wait, While Felching Response..";
+            document.getElementById('prism_response_jtext').innerHTML = "Please Wait, While Felching Response..";
+
+            let Url = document.getElementById('url').value;
+            let method = document.getElementById('methods');
+            let selected_method = methods.options[method.selectedIndex].value;
+
+
+
+
+            if (currentTab == 'Custom Parameters') {
+                data = {};
+                for (i = 0; i < param_count + 1; i++) {
+                    if (document.getElementById('parameterkey' + (i + 1)) != undefined) {
+                        let key = document.getElementById('parameterkey' + (i + 1)).value;
+                        let value = document.getElementById('parametervalue' + (i + 1)).value;
+                        data[key] = value;
+                    }
+                }
+                data = JSON.stringify(data);
+            }
+            else{
+                data = document.getElementById('requestjsontext').value;
+            }
+            console.log('url :', Url);
+            console.log('method :', selected_method);
+            console.log('data :', data);
+
+            // https://randomuser.me/api/
+            if (selected_method == 'GET') {
+                    fetch(Url, {
+                            method: 'GET',
+                        })
+                        .then(response => response.text())
+                        .then((text) => {
+                            // document.getElementById('responsejsontext').value = text;
+                            document.getElementById('prism_response').innerHTML = text;
+                            document.getElementById('status').style.display = 'inherit';
+                            document.getElementById('status-i').style.borderColor = 'lime';
+                            document.getElementById('status-i').style.backgroundColor = 'lime';
+                            document.getElementById('status-i').style.color = 'white';
+                            document.getElementById('status-code').style.borderColor = 'lime';
+                            document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                            document.getElementById('status-code').innerHTML = "200 : OK"
+                            document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                            document.getElementById('status-code').style.color = 'white';
+                            document.getElementById('status-code').style.textAlign = 'center';
+                        }).catch(error => {
+                            document.getElementById('prism_response').textContent = `Error: ${error}`;
+                            document.getElementById('status').style.display = 'inherit';
+                            document.getElementById('status-i').style.borderColor = 'red';
+                            document.getElementById('status-i').style.backgroundColor = 'red';
+                            document.getElementById('status-i').style.color = 'white';
+                            document.getElementById('status-code').style.borderColor = 'red';
+                            document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+                            document.getElementById('status-code').innerHTML = "404 : ERROR!"
+                            document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                            document.getElementById('status-code').style.color = 'white';
+                            document.getElementById('status-code').style.textAlign = 'center';
+                            console.error('Error fetching API:', error);
+                    });
+                }
+
+                // https://jsonplaceholder.typicode.com/posts
+                // {"title":"foo","body":"bar","userId":1}
+                else {
+                    fetch(Url, {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+
+
+                    })
+                        .then(response => response.text())
+                        .then((text) => {
+                            // document.getElementById('responsejsontext').value = text;
+                            document.getElementById('prism_response').innerHTML = text;
+                            document.getElementById('status').style.display = 'inherit';
+                            document.getElementById('status-i').style.borderColor = 'lime';
+                            document.getElementById('status-i').style.backgroundColor = 'lime';
+                            document.getElementById('status-i').style.color = 'white';
+                            document.getElementById('status-code').style.borderColor = 'lime';
+                            document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                            document.getElementById('status-code').innerHTML = "200 : OK"
+                            document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                            document.getElementById('status-code').style.color = 'white';
+                            document.getElementById('status-code').style.textAlign = 'center';
+                        }).catch(error => {
+                            document.getElementById('prism_response').textContent = `Error: ${error}`;
+                            document.getElementById('status').style.display = 'inherit';
+                            document.getElementById('status-i').style.borderColor = 'red';
+                            document.getElementById('status-i').style.backgroundColor = 'red';
+                            document.getElementById('status-i').style.color = 'white';
+                            document.getElementById('status-code').style.borderColor = 'red';
+                            document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+                            document.getElementById('status-code').innerHTML = "404 : ERROR!"
+                            document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                            document.getElementById('status-code').style.color = 'white';
+                            document.getElementById('status-code').style.textAlign = 'center';
+                            console.error('Error fetching API:', error);
+                    });
+                }
+            // https://randomuser.me/api/
+            if (selected_method == 'GET') {
+                    fetch(Url, {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                        document.getElementById('prism_response_jtext').textContent = JSON.stringify(json, null, 2);
+                        document.getElementById('status').style.display = 'inherit';
+                        document.getElementById('status-i').style.borderColor = 'lime';
+                        document.getElementById('status-i').style.backgroundColor = 'lime';
+                        document.getElementById('status-i').style.color = 'white';
+                        document.getElementById('status-code').style.borderColor = 'lime';
+                        document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                        document.getElementById('status-code').innerHTML = "200 : OK"
+                        document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                        document.getElementById('status-code').style.color = 'white';
+                        document.getElementById('status-code').style.textAlign = 'center';
+                    })
+                    .catch(error => {
+                            document.getElementById('prism_response_jtext').textContent = `Error: ${error}`;
+                            document.getElementById('status').style.display = 'inherit';
+                            document.getElementById('status-i').style.borderColor = 'red';
+                            document.getElementById('status-i').style.backgroundColor = 'red';
+                            document.getElementById('status-i').style.color = 'white';
+                            document.getElementById('status-code').style.borderColor = 'red';
+                            document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+                            document.getElementById('status-code').innerHTML = "404 : ERROR!"
+                            document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                            document.getElementById('status-code').style.color = 'white';
+                            document.getElementById('status-code').style.textAlign = 'center';
+                            console.error('Error fetching API:', error);
+                    });
+                }
+
+                // https://jsonplaceholder.typicode.com/posts
+                // {"title":"foo","body":"bar","userId":1}
+                else {
+                    fetch(Url, {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8',
+                        },
+
+
+                    })
+                    .then(response => response.json())
+                    .then(json => {
+                        document.getElementById('prism_response_jtext').textContent = JSON.stringify(json, null, 2);
+                        document.getElementById('status').style.display = 'inherit';
+                        document.getElementById('status-i').style.borderColor = 'lime';
+                        document.getElementById('status-i').style.backgroundColor = 'lime';
+                        document.getElementById('status-i').style.color = 'white';
+                        document.getElementById('status-code').style.borderColor = 'lime';
+                        document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                        document.getElementById('status-code').innerHTML = "200 : OK"
+                        document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                        document.getElementById('status-code').style.color = 'white';
+                        document.getElementById('status-code').style.textAlign = 'center';
+                    })
+                    .catch(error => {
+                            document.getElementById('prism_response_jtext').textContent = `Error: ${error}`;
+                            document.getElementById('status').style.display = 'inherit';
+                            document.getElementById('status-i').style.borderColor = 'red';
+                            document.getElementById('status-i').style.backgroundColor = 'red';
+                            document.getElementById('status-i').style.color = 'white';
+                            document.getElementById('status-code').style.borderColor = 'red';
+                            document.getElementById('status-i').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+                            document.getElementById('status-code').innerHTML = "404 : ERROR!"
+                            document.getElementById('status-code').style.backgroundColor = '#3e3a3a';
+                            document.getElementById('status-code').style.color = 'white';
+                            document.getElementById('status-code').style.textAlign = 'center';
+                            console.error('Error fetching API:', error);
+                    });
+                }            
+            
+        })
+
+
+
+    </script>
+</body>
+
+</html>
